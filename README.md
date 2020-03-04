@@ -1,4 +1,4 @@
-# Albacore  March, 2020
+# Albacore  
 
 Albacore Southern California off-shore velocity model
 
