@@ -1,0 +1,10 @@
+All communication regarding using ALBACORE or UCVM should be directed to 
+software@scec.org. Any scientific questions regarding this model should 
+be directed to the researchers behind this model.
+
+The data and code for this model is based off of the following paper:
+
+Bowden, D. C., M. D. Kohler, V. C. Tsai and  D. S. Weeraratne (2016),
+        Offshore Southern California lithospheric velocity structure 
+        from noise cross-correlation functions, J. Geophys. Res. 
+        Solid Earth, 121,doi:10.1002/2016JB012919.

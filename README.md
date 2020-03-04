@@ -1,2 +1,2 @@
 # albacore
-Alabacore southern California off-shore velocity model
+Albacore southern California off-shore velocity model
