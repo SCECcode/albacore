@@ -124,8 +124,8 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 	int zone = 11;
 	int longlat2utm = 0;
 
-        double delta_lon = (configuration->top_right_corner_e - configuration->bottom_left_corner_e)/(configuration->nx - 1)
-        double delta_lat = (configuration->top_right_corner_n - configuration->bottom_left_corner_n)/(configuraiton->ny - 1)
+        double delta_lon = (configuration->top_right_corner_e - configuration->bottom_left_corner_e)/(configuration->nx - 1);
+        double delta_lat = (configuration->top_right_corner_n - configuration->bottom_left_corner_n)/(configuration->ny - 1);
 
 	for (i = 0; i < numpoints; i++) {
 
@@ -133,9 +133,9 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 		lat_n = points[i].latitude; 
 
 		// Which point base point does that correspond to?
-		load_y_coord = int(round((lat_n - configuration->bottom_left_corner_n) / delta_lat))
-		load_x_coord = int(round((lon_e - configuration->bottom_left_corner_e) / delta_lon))
-		load_z_coord = int(points[i].depth)
+		load_y_coord = (int)(round((lat_n - configuration->bottom_left_corner_n) / delta_lat));
+		load_x_coord = (int)(round((lon_e - configuration->bottom_left_corner_e) / delta_lon));
+		load_z_coord = (int)(points[i].depth);
 
 		// Are we outside the model's X and Y boundaries?
 		if (load_x_coord > configuration->nx - 1 || load_y_coord > configuration->ny - 1 || load_x_coord < 0 || load_y_coord < 0) {
