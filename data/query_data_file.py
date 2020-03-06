@@ -63,14 +63,14 @@ def main():
 
         y_pos = int(round((lat_v - lat_origin) / delta_lat))
         x_pos = int(round((lon_v - lon_origin) / delta_lon))
-        z_pos = int(depth_v)
+        z_pos = int(depth_v/1000)
 
         offset=z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos
         vp=vp_arr[offset];
         vs=vs_arr[offset];
         rho=rho_arr[offset];
 
-        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->", vp," ", vs," ", rho
+        print "XX", x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->vp", vp," vs", vs," rho", rho
         print "offset ",offset
 
     f_lonlat.close()

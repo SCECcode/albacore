@@ -128,14 +128,14 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
         double delta_lat = (configuration->top_right_corner_n - configuration->bottom_left_corner_n)/(configuration->ny - 1);
 
 	for (i = 0; i < numpoints; i++) {
-
 		lon_e = points[i].longitude; 
 		lat_n = points[i].latitude; 
 
 		// Which point base point does that correspond to?
 		load_y_coord = (int)(round((lat_n - configuration->bottom_left_corner_n) / delta_lat));
 		load_x_coord = (int)(round((lon_e - configuration->bottom_left_corner_e) / delta_lon));
-		load_z_coord = (int)(points[i].depth);
+		load_z_coord = (int)((points[i].depth)/1000);
+//fprintf(stderr, "XXX y %d x %d z %d XXX \n", load_y_coord, load_x_coord, load_z_coord);
 
 		// Are we outside the model's X and Y boundaries?
 		if (load_x_coord > configuration->nx - 1 || load_y_coord > configuration->ny - 1 || load_x_coord < 0 || load_y_coord < 0) {
@@ -152,6 +152,7 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 		y_percent = fmod((lat_n - configuration->bottom_left_corner_n), delta_lat)/
 delta_lat;
 		z_percent = fmod(points[i].depth, configuration->depth_interval) / configuration->depth_interval;
+//fprintf(stderr, "XXX y_p %lf x_p  %lf z_p %lf XXX \n", y_percent, x_percent, z_percent);
 
 		if (load_z_coord < 1) {
 			// We're below the model boundaries. Bilinearly interpolate the bottom plane and use that value.
@@ -180,16 +181,10 @@ delta_lat;
 			trilinear_interpolation(x_percent, y_percent, z_percent, surrounding_points, &(data[i]));
 		}
 
-		// Calculate density.
+		//??? Calculate density.
 		//data[i].rho = calculate_density(data[i].vs);
-
-		// Calculate Qp and Qs.
-		if (data[i].vs < 1500)
-			data[i].qs = data[i].vs * 0.02;
-		else
-			data[i].qs = data[i].vs * 0.10;
-
-		data[i].qp = data[i].qs * 1.5;
+		data[i].qp = -1;
+		data[i].qs = -1;
 	}
 
 	return SUCCESS;
@@ -205,6 +200,7 @@ delta_lat;
  * @param data The properties struct to which the material properties will be written.
  */
 void read_properties(int x, int y, int z, albacore_properties_t *data) {
+
 	// Set everything to -1 to indicate not found.
 	data->vp = -1;
 	data->vs = -1;
@@ -214,7 +210,10 @@ void read_properties(int x, int y, int z, albacore_properties_t *data) {
 
 	float *ptr = NULL;
 	FILE *fp = NULL;
-	int location = z * configuration->nx * configuration->ny + (configuration->nx - x - 1) * configuration->ny + y;
+
+	int location = z * (configuration->nx * configuration->ny) + (y * configuration->nx) + x;
+
+//fprintf(stderr,"XXX location %d\n", location);
 
 	// Check our loaded components of the model.
 	if (velocity_model->vs_status == 2) {
@@ -290,10 +289,13 @@ void trilinear_interpolation(double x_percent, double y_percent, double z_percen
  * @param ret_properties Returned data properties.
  */
 void bilinear_interpolation(double x_percent, double y_percent, albacore_properties_t *four_points, albacore_properties_t *ret_properties) {
+
 	albacore_properties_t *temp_array = calloc(2, sizeof(albacore_properties_t));
+
 	linear_interpolation(x_percent, &four_points[0], &four_points[1], &temp_array[0]);
 	linear_interpolation(x_percent, &four_points[2], &four_points[3], &temp_array[1]);
 	linear_interpolation(y_percent, &temp_array[0], &temp_array[1], ret_properties);
+
 	free(temp_array);
 }
 
@@ -306,11 +308,10 @@ void bilinear_interpolation(double x_percent, double y_percent, albacore_propert
  * @param ret_properties Resulting data properties.
  */
 void linear_interpolation(double percent, albacore_properties_t *x0, albacore_properties_t *x1, albacore_properties_t *ret_properties) {
+
 	ret_properties->vp  = (1 - percent) * x0->vp  + percent * x1->vp;
 	ret_properties->vs  = (1 - percent) * x0->vs  + percent * x1->vs;
 	ret_properties->rho = (1 - percent) * x0->rho + percent * x1->rho;
-	ret_properties->qp  = (1 - percent) * x0->qp  + percent * x1->qp;
-	ret_properties->qs  = (1 - percent) * x0->qs  + percent * x1->qs;
 }
 
 /**

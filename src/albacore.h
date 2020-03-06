@@ -50,10 +50,10 @@ typedef struct albacore_properties_t {
 	double vs;
 	/** Density in g/m^3 */
 	double rho;
-	/** Qp */
-	double qp;
-	/** Qs */
-	double qs;
+        /** not in use */
+        double qp;
+        /** not in use */
+        double qs;
 } albacore_properties_t;
 
 /** The ALBACORE configuration structure. */
@@ -153,13 +153,6 @@ typedef struct albacore_model_t {
 	/** Rho status: 0 = not found, 1 = found and not in memory, 2 = found and in memory */
 	int rho_status;
 	/** A pointer to the Qp data either in memory or disk. Null if does not exist. */
-	void *qp;
-	/** Qp status: 0 = not found, 1 = found and not in memory, 2 = found and in memory */
-	int qp_status;
-	/** A pointer to the Qs data either in memory or disk. Null if does not exist. */
-	void *qs;
-	/** Qs status: 0 = not found, 1 = found and not in memory, 2 = found and in memory */
-	int qs_status;
 } albacore_model_t;
 
 /** Contains the Vs30 and surface values from the UCVM map. */

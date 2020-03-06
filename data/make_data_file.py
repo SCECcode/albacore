@@ -5,6 +5,7 @@
 #  Builds the data files in the expected format from alba_mod.txt
 #
 # from >> lat lon depth(km) vs(km/s) vp(km/s) den(g/cm^2)
+
 # to >>  /** P-wave velocity in meters per second */
 #        double vp;
 #        /** S-wave velocity in meters per second */
@@ -103,20 +104,22 @@ def main():
         depth_v = float(arr[2])
         vs = float(arr[3]) * 1000 
         vp = float(arr[4]) * 1000
-        rho = float(arr[5])
+        rho = float(arr[5]) * 1000
 
         y_pos = int(round((lat_v - lat_origin) / delta_lat))
         x_pos = int(round((lon_v - lon_origin) / delta_lon))
         z_pos = int(depth_v)
 
         count = count + 1
-        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ",depth_v , "-->", vp, " ", vs, " ", rho
-
         loc =z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos
 
-        vp_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = vp
-        vs_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = vs
-        rho_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = rho
+        vp_arr[loc] = vp
+        vs_arr[loc] = vs
+        rho_arr[loc] = rho
+        if( loc < 10) :
+           print line
+           print "XXX loc", loc, ":vp", vp," vs",vs," rho",rho
+           print " ==> ", x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ",depth_v 
 
     vp_arr.tofile(f_vp)
     vs_arr.tofile(f_vs)
