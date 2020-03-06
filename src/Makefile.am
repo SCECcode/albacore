@@ -29,5 +29,7 @@ albacore.o: albacore.c
 albacore_static.o: albacore.c
 	$(CC) -o $@ -c $^ $(AM_CFLAGS)
 	
-utm_geo.o: utm_geo.f90
-	$(FC) -fPIC -o $@ -c $^ $(AM_FCFLAGS)
+clean:
+	rm -rf $(TARGETS)
+	rm -rf *.o 
+

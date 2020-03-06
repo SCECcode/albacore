@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <math.h>
 
+#include "etree.h"
 #include "proj_api.h"
 
 // Constants

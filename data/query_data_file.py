@@ -41,15 +41,15 @@ def main():
 
     f_vp = open("./alba/vp.dat")
     f_vs = open("./alba/vs.dat")
-    f_density = open("./alba/density.dat")
+    f_rho = open("./alba/rho.dat")
 
     vp_arr = np.fromfile(f_vp, dtype=np.float32)
     vs_arr = np.fromfile(f_vs, dtype=np.float32)
-    density_arr = np.fromfile(f_density, dtype=np.float32)
+    rho_arr = np.fromfile(f_rho, dtype=np.float32)
 
     f_vp.close()
     f_vs.close()
-    f_density.close()
+    f_rho.close()
 
     lon_start = lon_origin
     lat_start = lat_origin
@@ -68,9 +68,10 @@ def main():
         offset=z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos
         vp=vp_arr[offset];
         vs=vs_arr[offset];
-        density=density_arr[offset];
+        rho=rho_arr[offset];
 
-        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->", vp," ", vs," ", density
+        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->", vp," ", vs," ", rho
+        print "offset ",offset
 
     f_lonlat.close()
     print("\nDone!")

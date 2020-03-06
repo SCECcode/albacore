@@ -12,7 +12,7 @@
 #        /** Density in g/m^3 */
 #        double rho;
 #
-#   Albacore's density is g/cm^2 ???
+#   Albacore's rho/density is g/cm^2 ???
  
 
 import getopt
@@ -86,11 +86,11 @@ def main():
 
     f_vp = open("./alba/vp.dat", "wb")
     f_vs = open("./alba/vs.dat", "wb")
-    f_density = open("./alba/density.dat", "wb")
+    f_rho = open("./alba/rho.dat", "wb")
 
     vp_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
     vs_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
-    density_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
+    rho_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
 
     first = True
     for line in f:
@@ -103,29 +103,29 @@ def main():
         depth_v = float(arr[2])
         vs = float(arr[3]) * 1000 
         vp = float(arr[4]) * 1000
-        density = float(arr[5])
+        rho = float(arr[5])
 
         y_pos = int(round((lat_v - lat_origin) / delta_lat))
         x_pos = int(round((lon_v - lon_origin) / delta_lon))
         z_pos = int(depth_v)
 
         count = count + 1
-        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ",depth_v , "-->", vp, " ", vs, " ", density
+        print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ",depth_v , "-->", vp, " ", vs, " ", rho
 
         loc =z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos
 
         vp_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = vp
         vs_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = vs
-        density_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = density
+        rho_arr[z_pos * (dimension_y * dimension_x) + (y_pos * dimension_x) + x_pos] = rho
 
     vp_arr.tofile(f_vp)
     vs_arr.tofile(f_vs)
-    density_arr.tofile(f_density)
+    rho_arr.tofile(f_rho)
 
     f.close()
     f_vp.close()
     f_vs.close()
-    f_density.close()
+    f_rho.close()
 
     print("\nDone!")
 
