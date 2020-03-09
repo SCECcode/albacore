@@ -15,9 +15,6 @@
 #include <unistd.h>
 #include <math.h>
 
-#include "etree.h"
-#include "proj_api.h"
-
 // Constants
 #ifndef M_PI
 	/** Defines pi */
@@ -105,41 +102,6 @@ typedef struct albacore_configuration_t {
 
 } albacore_configuration_t;
 
-typedef struct albacore_vs30_map_config_t {
-        /** Pointer to the e-tree file */
-        etree_t *vs30_map;
-        /** The type of map */
-        char type[20];
-        /** A description of the map */
-        char description[50];
-        /** The map's author */
-        char author[30];
-        /** The date the map was created */
-        char date[10];
-        /** The spacing in meters */
-        double spacing;
-        /** The map's schema */
-        char schema[50];
-        /** The projection string in Proj.4 format */
-        char projection[128];
-        /** The origin point */
-        albacore_point_t origin_point;
-        /** The number of degrees the map was rotated around origin */
-        double rotation;
-        /** The X dimension of the map */
-        double x_dimension;
-        /** The Y dimension of the map */
-        double y_dimension;
-        /** The Z dimension of the map */
-        double z_dimension;
-        /** Number of e-tree ticks in the X direction */
-        int x_ticks;
-        /** Number of e-tree ticks in the Y direction */
-        int y_ticks;
-        /** Number of e-tree ticks in the Z direction */
-        int z_ticks;
-} albacore_vs30_map_config_t;
-
 /** The model structure which points to available portions of the model. */
 typedef struct albacore_model_t {
 	/** A pointer to the Vs data either in memory or disk. Null if does not exist. */
@@ -157,54 +119,26 @@ typedef struct albacore_model_t {
 	/** A pointer to the Qp data either in memory or disk. Null if does not exist. */
 } albacore_model_t;
 
-/** Contains the Vs30 and surface values from the UCVM map. */
-typedef struct vs30_mpayload_t {
-        /** Surface height in meters */
-        float surf;
-        /** Vs30 data from Wills and Wald */
-        float vs30;
-} vs30_mpayload_t;
-
 // Constants
 /** The version of the model. */
-const char *version_string = "ALBACORE";
+const char *albacore_version_string = "ALBACORE";
 
 // Variables
 /** Set to 1 when the model is ready for query. */
-int is_initialized = 0;
+int albacore_is_initialized = 0;
 
-/** Location of the ucvm.e e-tree file. */
-char vs30_etree_file[128];
 /** Location of the binary data files. */
-char data_directory[128];
+char albacore_data_directory[128];
 
 /** Configuration parameters. */
 albacore_configuration_t *albacore_configuration;
 /** Holds pointers to the velocity model data OR indicates it can be read from file. */
 albacore_model_t *albacore_velocity_model;
-albacore_vs30_map_config_t *vs30_map;
-
-/** Proj.4 latitude longitude, WGS84 projection holder. */
-projPJ albacore_latlon;
-/** Proj.4 UTM projection holder. */
-projPJ albacore_utm;
-/** Proj.4 Vs30 map projection holder. */
-projPJ albacore_aeqd;
-
-/** The cosine of the rotation angle used to rotate the box and point around the bottom-left corner. */
-double cos_rotation_angle = 0;
-/** The sine of the rotation angle used to rotate the box and point around the bottom-left corner. */
-double sin_rotation_angle = 0;
 
 /** The height of this model's region, in meters. */
-double total_height_m = 0;
+double albacore_total_height_m = 0;
 /** The width of this model's region, in meters. */
-double total_width_m = 0;
-
-/** The cosine of the Vs30 map's rotation. */
-double cos_vs30_rotation_angle = 0;
-/** The sine of the Vs30 map's rotation. */
-double sin_vs30_rotation_angle = 0;
+double albacore_total_width_m = 0;
 
 // UCVM API Required Functions
 
@@ -234,27 +168,20 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 
 // Non-UCVM Helper Functions
 /** Reads the configuration file. */
-int read_configuration(char *file, albacore_configuration_t *config);
-/** Retrieves the vs30 value for a given point. */
-int get_vs30_based_gtl(albacore_point_t *point, albacore_properties_t *data);
-/** Prints out the error string. */
+int albacore_read_configuration(char *file, albacore_configuration_t *config);
 void print_error(char *err);
 /** Retrieves the value at a specified grid point in the model. */
-void read_properties(int x, int y, int z, albacore_properties_t *data);
+void albacore_read_properties(int x, int y, int z, albacore_properties_t *data);
 /** Attempts to malloc the model size in memory and read it in. */
-int try_reading_model(albacore_model_t *model);
-/** Reads the specified Vs30 map from UCVM. */
-int read_vs30_map(char *filename, albacore_vs30_map_config_t *map);
-/** Gets the Vs30 value at a point */
-double get_vs30_value(double longitude, double latitude, albacore_vs30_map_config_t *map);
+int albacore_try_reading_model(albacore_model_t *model);
 /** Calculates density from Vs. */
-double calculate_density(double vs);
+double albacore_calculate_density(double vs);
 
 // Interpolation Functions
 /** Linearly interpolates two albacore_properties_t structures */
-void linear_interpolation(double percent, albacore_properties_t *x0, albacore_properties_t *x1, albacore_properties_t *ret_properties);
+void albacore_linear_interpolation(double percent, albacore_properties_t *x0, albacore_properties_t *x1, albacore_properties_t *ret_properties);
 /** Bilinearly interpolates the properties. */
-void bilinear_interpolation(double x_percent, double y_percent, albacore_properties_t *four_points, albacore_properties_t *ret_properties);
+void albacore_bilinear_interpolation(double x_percent, double y_percent, albacore_properties_t *four_points, albacore_properties_t *ret_properties);
 /** Trilinearly interpolates the properties. */
-void trilinear_interpolation(double x_percent, double y_percent, double z_percent, albacore_properties_t *eight_points,
+void albacore_trilinear_interpolation(double x_percent, double y_percent, double z_percent, albacore_properties_t *eight_points,
 							 albacore_properties_t *ret_properties);

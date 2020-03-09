@@ -33,14 +33,14 @@ int albacore_init(const char *dir, const char *label) {
 	sprintf(configbuf, "%s/model/%s/data/config", dir, label);
 
 	// Read the configuration file.
-	if (read_configuration(configbuf, albacore_configuration) != SUCCESS)
+	if (albacore_read_configuration(configbuf, albacore_configuration) != SUCCESS)
 		tempVal = FAIL;
 
 	// Set up the data directory.
-	sprintf(data_directory, "%s/model/%s/data/%s/", dir, label, albacore_configuration->model_dir);
+	sprintf(albacore_data_directory, "%s/model/%s/data/%s/", dir, label, albacore_configuration->model_dir);
 
 	// Can we allocate the model, or parts of it, to memory. If so, we do.
-	tempVal = try_reading_model(albacore_velocity_model);
+	tempVal = albacore_try_reading_model(albacore_velocity_model);
 
 	if (tempVal == SUCCESS) {
 		fprintf(stderr, "WARNING: Could not load model into memory. Reading the model from the\n");
@@ -55,13 +55,13 @@ int albacore_init(const char *dir, const char *label) {
 	// point so that is is somewhere between (0,0) and (total_width_m, total_height_m). How far along
 	// the X and Y axis determines which grid points we use for the interpolation routine.
 
-	total_height_m = sqrt(pow(albacore_configuration->top_left_corner_n - albacore_configuration->bottom_left_corner_n, 2.0f) +
+	albacore_total_height_m = sqrt(pow(albacore_configuration->top_left_corner_n - albacore_configuration->bottom_left_corner_n, 2.0f) +
 						  pow(albacore_configuration->top_left_corner_e - albacore_configuration->bottom_left_corner_e, 2.0f));
-	total_width_m  = sqrt(pow(albacore_configuration->top_right_corner_n - albacore_configuration->top_left_corner_n, 2.0f) +
+	albacore_total_width_m  = sqrt(pow(albacore_configuration->top_right_corner_n - albacore_configuration->top_left_corner_n, 2.0f) +
 						  pow(albacore_configuration->top_right_corner_e - albacore_configuration->top_left_corner_e, 2.0f));
 
 	// Let everyone know that we are initialized and ready for business.
-	is_initialized = 1;
+	albacore_is_initialized = 1;
 
 	return SUCCESS;
 }
@@ -120,37 +120,37 @@ delta_lat;
                    if(albacore_configuration->interpolation) {
 
 			// Get the four properties.
-			read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(surrounding_points[0]));	// Orgin.
-			read_properties(load_x_coord + 1, load_y_coord,     load_z_coord,     &(surrounding_points[1]));	// Orgin + 1x
-			read_properties(load_x_coord,     load_y_coord + 1, load_z_coord,     &(surrounding_points[2]));	// Orgin + 1y
-			read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord,     &(surrounding_points[3]));	// Orgin + x + y, forms top plane.
+			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(surrounding_points[0]));	// Orgin.
+			albacore_read_properties(load_x_coord + 1, load_y_coord,     load_z_coord,     &(surrounding_points[1]));	// Orgin + 1x
+			albacore_read_properties(load_x_coord,     load_y_coord + 1, load_z_coord,     &(surrounding_points[2]));	// Orgin + 1y
+			albacore_read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord,     &(surrounding_points[3]));	// Orgin + x + y, forms top plane.
 
-			bilinear_interpolation(x_percent, y_percent, surrounding_points, &(data[i]));
+			albacore_bilinear_interpolation(x_percent, y_percent, surrounding_points, &(data[i]));
                   } else {
-			read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(data[i]));	// Orgin.
+			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(data[i]));	// Orgin.
                   }
 
 		} else {
 		  if( albacore_configuration->interpolation) {
 			// Read all the surrounding point properties.
-			read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(surrounding_points[0]));	// Orgin.
-			read_properties(load_x_coord + 1, load_y_coord,     load_z_coord,     &(surrounding_points[1]));	// Orgin + 1x
-			read_properties(load_x_coord,     load_y_coord + 1, load_z_coord,     &(surrounding_points[2]));	// Orgin + 1y
-			read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord,     &(surrounding_points[3]));	// Orgin + x + y, forms top plane.
-			read_properties(load_x_coord,     load_y_coord,     load_z_coord - 1, &(surrounding_points[4]));	// Bottom plane origin
-			read_properties(load_x_coord + 1, load_y_coord,     load_z_coord - 1, &(surrounding_points[5]));	// +1x
-			read_properties(load_x_coord,     load_y_coord + 1, load_z_coord - 1, &(surrounding_points[6]));	// +1y
-			read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord - 1, &(surrounding_points[7]));	// +x +y, forms bottom plane.
+			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(surrounding_points[0]));	// Orgin.
+			albacore_read_properties(load_x_coord + 1, load_y_coord,     load_z_coord,     &(surrounding_points[1]));	// Orgin + 1x
+			albacore_read_properties(load_x_coord,     load_y_coord + 1, load_z_coord,     &(surrounding_points[2]));	// Orgin + 1y
+			albacore_read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord,     &(surrounding_points[3]));	// Orgin + x + y, forms top plane.
+			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord - 1, &(surrounding_points[4]));	// Bottom plane origin
+			albacore_read_properties(load_x_coord + 1, load_y_coord,     load_z_coord - 1, &(surrounding_points[5]));	// +1x
+			albacore_read_properties(load_x_coord,     load_y_coord + 1, load_z_coord - 1, &(surrounding_points[6]));	// +1y
+			albacore_read_properties(load_x_coord + 1, load_y_coord + 1, load_z_coord - 1, &(surrounding_points[7]));	// +x +y, forms bottom plane.
 
-			trilinear_interpolation(x_percent, y_percent, z_percent, surrounding_points, &(data[i]));
+			albacore_trilinear_interpolation(x_percent, y_percent, z_percent, surrounding_points, &(data[i]));
                     } else {
                         // no interpolation, data as it is
-			read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(data[i]));	// Orgin.
+			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(data[i]));	// Orgin.
                     }
 		}
 
 		//??? Calculate density.
-		//data[i].rho = calculate_density(data[i].vs);
+		//data[i].rho = albacore_calculate_density(data[i].vs);
 		data[i].qp = -1;
 		data[i].qs = -1;
 	}
@@ -167,7 +167,7 @@ delta_lat;
  * @param z The z coordinate of the data point.
  * @param data The properties struct to which the material properties will be written.
  */
-void read_properties(int x, int y, int z, albacore_properties_t *data) {
+void albacore_read_properties(int x, int y, int z, albacore_properties_t *data) {
 
 	// Set everything to -1 to indicate not found.
 	data->vp = -1;
@@ -226,21 +226,21 @@ void read_properties(int x, int y, int z, albacore_properties_t *data) {
  * @param eight_points Eight surrounding data properties
  * @param ret_properties Returned data properties
  */
-void trilinear_interpolation(double x_percent, double y_percent, double z_percent,
+void albacore_trilinear_interpolation(double x_percent, double y_percent, double z_percent,
 							 albacore_properties_t *eight_points, albacore_properties_t *ret_properties) {
 	albacore_properties_t *temp_array = calloc(2, sizeof(albacore_properties_t));
 	albacore_properties_t *four_points = eight_points;
 
-	bilinear_interpolation(x_percent, y_percent, four_points, &temp_array[0]);
+	albacore_bilinear_interpolation(x_percent, y_percent, four_points, &temp_array[0]);
 
 	// Now advance the pointer four "albacore_properties_t" spaces.
 	four_points += 4;
 
 	// Another interpolation.
-	bilinear_interpolation(x_percent, y_percent, four_points, &temp_array[1]);
+	albacore_bilinear_interpolation(x_percent, y_percent, four_points, &temp_array[1]);
 
 	// Now linearly interpolate between the two.
-	linear_interpolation(z_percent, &temp_array[0], &temp_array[1], ret_properties);
+	albacore_linear_interpolation(z_percent, &temp_array[0], &temp_array[1], ret_properties);
 
 	free(temp_array);
 }
@@ -254,13 +254,13 @@ void trilinear_interpolation(double x_percent, double y_percent, double z_percen
  * @param four_points Data property plane.
  * @param ret_properties Returned data properties.
  */
-void bilinear_interpolation(double x_percent, double y_percent, albacore_properties_t *four_points, albacore_properties_t *ret_properties) {
+void albacore_bilinear_interpolation(double x_percent, double y_percent, albacore_properties_t *four_points, albacore_properties_t *ret_properties) {
 
 	albacore_properties_t *temp_array = calloc(2, sizeof(albacore_properties_t));
 
-	linear_interpolation(x_percent, &four_points[0], &four_points[1], &temp_array[0]);
-	linear_interpolation(x_percent, &four_points[2], &four_points[3], &temp_array[1]);
-	linear_interpolation(y_percent, &temp_array[0], &temp_array[1], ret_properties);
+	albacore_linear_interpolation(x_percent, &four_points[0], &four_points[1], &temp_array[0]);
+	albacore_linear_interpolation(x_percent, &four_points[2], &four_points[3], &temp_array[1]);
+	albacore_linear_interpolation(y_percent, &temp_array[0], &temp_array[1], ret_properties);
 
 	free(temp_array);
 }
@@ -273,7 +273,7 @@ void bilinear_interpolation(double x_percent, double y_percent, albacore_propert
  * @param x1 Data point at x1.
  * @param ret_properties Resulting data properties.
  */
-void linear_interpolation(double percent, albacore_properties_t *x0, albacore_properties_t *x1, albacore_properties_t *ret_properties) {
+void albacore_linear_interpolation(double percent, albacore_properties_t *x0, albacore_properties_t *x1, albacore_properties_t *ret_properties) {
 
 	ret_properties->vp  = (1 - percent) * x0->vp  + percent * x1->vp;
 	ret_properties->vs  = (1 - percent) * x0->vs  + percent * x1->vs;
@@ -286,9 +286,6 @@ void linear_interpolation(double percent, albacore_properties_t *x0, albacore_pr
  * @return SUCCESS
  */
 int albacore_finalize() {
-	pj_free(albacore_latlon);
-	pj_free(albacore_utm);
-
 	if (albacore_velocity_model->vs) free(albacore_velocity_model->vs);
 	if (albacore_velocity_model->vp) free(albacore_velocity_model->vp);
 	if (albacore_velocity_model->rho) free(albacore_velocity_model->rho);
@@ -308,12 +305,12 @@ int albacore_finalize() {
 int albacore_version(char *ver, int len)
 {
   int verlen;
-  verlen = strlen(version_string);
+  verlen = strlen(albacore_version_string);
   if (verlen > len - 1) {
     verlen = len - 1;
   }
   memset(ver, 0, len);
-  strncpy(ver, version_string, verlen);
+  strncpy(ver, albacore_version_string, verlen);
   return 0;
 }
 
@@ -326,7 +323,7 @@ int albacore_version(char *ver, int len)
  * @param config The configuration struct to which the data should be written.
  * @return Success or failure, depending on if file was read successfully.
  */
-int read_configuration(char *file, albacore_configuration_t *config) {
+int albacore_read_configuration(char *file, albacore_configuration_t *config) {
 	FILE *fp = fopen(file, "r");
 	char key[40];
 	char value[80];
@@ -419,7 +416,7 @@ int read_configuration(char *file, albacore_configuration_t *config) {
  * @param vs The Vs value off which to scale.
  * @return Density, in g/m^3.
  */
-double calculate_density(double vs) {
+double albacore_calculate_density(double vs) {
 	double retVal;
 	vs = vs / 1000;
 	retVal = albacore_configuration->p0 + albacore_configuration->p1 * vs + albacore_configuration->p2 * pow(vs, 2) +
@@ -447,7 +444,7 @@ void print_error(char *err) {
  * @return 2 if all files are read to memory, SUCCESS if file is found but at least 1
  * is not in memory, FAIL if no file found.
  */
-int try_reading_model(albacore_model_t *model) {
+int albacore_try_reading_model(albacore_model_t *model) {
 	double base_malloc = albacore_configuration->nx * albacore_configuration->ny * albacore_configuration->nz * sizeof(float);
 	int file_count = 0;
 	int all_read_to_memory = 1;
@@ -455,7 +452,7 @@ int try_reading_model(albacore_model_t *model) {
 	FILE *fp;
 
 	// Let's see what data we actually have.
-	sprintf(current_file, "%s/vp.dat", data_directory);
+	sprintf(current_file, "%s/vp.dat", albacore_data_directory);
 	if (access(current_file, R_OK) == 0) {
 		model->vp = malloc(base_malloc);
 		if (model->vp != NULL) {
@@ -472,7 +469,7 @@ int try_reading_model(albacore_model_t *model) {
 		file_count++;
 	}
 
-	sprintf(current_file, "%s/vs.dat", data_directory);
+	sprintf(current_file, "%s/vs.dat", albacore_data_directory);
 	if (access(current_file, R_OK) == 0) {
 		model->vs = malloc(base_malloc);
 		if (model->vs != NULL) {
@@ -489,7 +486,7 @@ int try_reading_model(albacore_model_t *model) {
 		file_count++;
 	}
 
-	sprintf(current_file, "%s/rho.dat", data_directory);
+	sprintf(current_file, "%s/rho.dat", albacore_data_directory);
 	if (access(current_file, R_OK) == 0) {
 		model->rho = malloc(base_malloc);
 		if (model->rho != NULL) {
