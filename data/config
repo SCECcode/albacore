@@ -35,3 +35,6 @@ top_right_corner_n	= 34.8
 
 top_left_corner_e 	= -124.6472
 top_left_corner_n	= 34.8
+
+## bilinear or trilinear interpolation
+interpolation = off 

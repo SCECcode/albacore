@@ -100,9 +100,11 @@ typedef struct albacore_configuration_t {
 	double p4;
 	/** Brocher 2005 scaling polynomial coefficient 10^5 */
 	double p5;
+        /** Bilinear or Trilinear Interpolation on or off (1 or 0) */
+        int interpolation;
+
 } albacore_configuration_t;
 
-/** The configuration structure for the Vs30 map. */
 typedef struct albacore_vs30_map_config_t {
         /** Pointer to the e-tree file */
         etree_t *vs30_map;
@@ -177,10 +179,9 @@ char vs30_etree_file[128];
 char data_directory[128];
 
 /** Configuration parameters. */
-albacore_configuration_t *configuration;
+albacore_configuration_t *albacore_configuration;
 /** Holds pointers to the velocity model data OR indicates it can be read from file. */
-albacore_model_t *velocity_model;
-/** Holds the configuration parameters for the Vs30 map. */
+albacore_model_t *albacore_velocity_model;
 albacore_vs30_map_config_t *vs30_map;
 
 /** Proj.4 latitude longitude, WGS84 projection holder. */
