@@ -95,10 +95,11 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 		load_y_coord = (int)(round((lat_n - albacore_configuration->bottom_left_corner_n) / delta_lat));
 		load_x_coord = (int)(round((lon_e - albacore_configuration->bottom_left_corner_e) / delta_lon));
 		load_z_coord = (int)((points[i].depth)/1000);
+
 //fprintf(stderr, "XXX y %d x %d z %d XXX \n", load_y_coord, load_x_coord, load_z_coord);
 
-		// Are we outside the model's X and Y boundaries?
-		if (load_x_coord > albacore_configuration->nx - 1 || load_y_coord > albacore_configuration->ny - 1 || load_x_coord < 0 || load_y_coord < 0) {
+		// Are we outside the model's X and Y and Z boundaries?
+		if (load_x_coord > albacore_configuration->nx - 1 || load_y_coord > albacore_configuration->ny - 1 || load_x_coord < 0 || load_y_coord < 0 || load_z_coord < 1 || load_z_coord > (int)(albacore_configuration->depth/1000)) {
 			data[i].vp = -1;
 			data[i].vs = -1;
 			data[i].rho = -1;
