@@ -9,7 +9,7 @@ model_dir = alba
 # Number of cells in x, y, and z.
 nx = 27
 ny = 8 
-nz = 100
+nz = 101
 
 # Depth, in meters
 depth = 100000
