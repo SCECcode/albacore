@@ -15,14 +15,6 @@ nz = 101
 depth = 100000
 depth_interval = 1000
 
-# Density scaling parameters
-p5 = -0.0024189659303912917
-p4 = 0.015600987888334450
-p3 = 0.051962399479341816
-p2 = -0.51231936640441489
-p1 = 1.2550758337054457
-p0 = 1.2948318548300342
-
 # Corners, in LATLON 
 bottom_right_corner_e	= -116.8472
 bottom_right_corner_n   = 32.7

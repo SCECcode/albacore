@@ -150,8 +150,6 @@ delta_lat;
                     }
 		}
 
-		//??? Calculate density.
-		//data[i].rho = albacore_calculate_density(data[i].vs);
 		data[i].qp = -1;
 		data[i].qs = -1;
 	}
@@ -412,30 +410,15 @@ int albacore_read_configuration(char *file, albacore_configuration_t *config) {
 }
 
 /**
- * Calculates the density based off of Vs. Based on Nafe-Drake scaling relationship.
- *
- * @param vs The Vs value off which to scale.
- * @return Density, in g/m^3.
- */
-double albacore_calculate_density(double vs) {
-	double retVal;
-	vs = vs / 1000;
-	retVal = albacore_configuration->p0 + albacore_configuration->p1 * vs + albacore_configuration->p2 * pow(vs, 2) +
-			 albacore_configuration->p3 * pow(vs, 3) + albacore_configuration->p4 * pow(vs, 4) + albacore_configuration->p5 * pow(vs, 5);
-	retVal = retVal * 1000;
-	return retVal;
-}
-
-/**
  * Prints the error string provided.
  *
  * @param err The error string to print out to stderr.
  */
 void print_error(char *err) {
-	fprintf(stderr, "An error has occurred while executing CVM-S5. The error was:\n\n");
+	fprintf(stderr, "An error has occurred while executing ALBACORE. The error was:\n\n");
 	fprintf(stderr, "%s", err);
 	fprintf(stderr, "\n\nPlease contact software@scec.org and describe both the error and a bit\n");
-	fprintf(stderr, "about the computer you are running CVM-S5 on (Linux, Mac, etc.).\n");
+	fprintf(stderr, "about the computer you are running ALBACORE on (Linux, Mac, etc.).\n");
 }
 
 /**
