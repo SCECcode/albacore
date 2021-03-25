@@ -47,10 +47,6 @@ typedef struct albacore_properties_t {
 	double vs;
 	/** Density in g/m^3 */
 	double rho;
-        /** not in use */
-        double qp;
-        /** not in use */
-        double qs;
 } albacore_properties_t;
 
 /** The ALBACORE configuration structure. */

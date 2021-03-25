@@ -103,8 +103,6 @@ int albacore_query(albacore_point_t *points, albacore_properties_t *data, int nu
 			data[i].vp = -1;
 			data[i].vs = -1;
 			data[i].rho = -1;
-			data[i].qp = -1;
-			data[i].qs = -1;
 			continue;
 		}
 
@@ -149,9 +147,6 @@ delta_lat;
 			albacore_read_properties(load_x_coord,     load_y_coord,     load_z_coord,     &(data[i]));	// Orgin.
                     }
 		}
-
-		data[i].qp = -1;
-		data[i].qs = -1;
 	}
 
 	return SUCCESS;
@@ -172,8 +167,6 @@ void albacore_read_properties(int x, int y, int z, albacore_properties_t *data) 
 	data->vp = -1;
 	data->vs = -1;
 	data->rho = -1;
-	data->qp = -1;
-	data->qs = -1;
 
 	float *ptr = NULL;
 	FILE *fp = NULL;
@@ -398,8 +391,7 @@ int albacore_read_configuration(char *file, albacore_configuration_t *config) {
 		config->top_left_corner_e == 0 || config->top_left_corner_n == 0 || config->top_right_corner_e == 0 ||
 		config->top_right_corner_n == 0 || config->bottom_left_corner_e == 0 || config->bottom_left_corner_n == 0 ||
 		config->bottom_right_corner_e == 0 || config->bottom_right_corner_n == 0 || config->depth == 0 ||
-		config->depth_interval == 0 || config->p0 == 0 || config->p1 == 0 || config->p2 == 0 || config->p3 == 0 ||
-		config->p4 == 0 || config->p5 == 0) {
+		config->depth_interval == 0 ) {
 		print_error("One configuration parameter not specified. Please check your configuration file.");
 		return FAIL;
 	}
