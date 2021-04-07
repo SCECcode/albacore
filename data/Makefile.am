@@ -6,6 +6,6 @@ AM_FCFLAGS = ${FCFLAGS}
 AM_LDFLAGS = ${LDFLAGS}
 
 install:
-	mkdir -p ${prefix}/data/alba
+	mkdir -p ${prefix}/data
 	cp ./config ${prefix}/data
-	cp ./alba/* ${prefix}/data/alba
+	cp -R ./alba ${prefix}/data
