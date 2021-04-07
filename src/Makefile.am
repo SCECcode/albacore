@@ -2,7 +2,6 @@
 
 # General compiler/linker flags
 AM_CFLAGS = ${CFLAGS}
-AM_FCFLAGS = ${FCFLAGS}
 AM_LDFLAGS = ${LDFLAGS}
 
 TARGETS = libalbacore.a libalbacore.so
@@ -21,7 +20,7 @@ libalbacore.a: albacore_static.o
 	$(AR) rcs $@ $^
 
 libalbacore.so: albacore.o
-	$(FC) -shared $(AM_FCFLAGS) -o libalbacore.so $^ $(AM_LDFLAGS)
+	$(CC) -shared $(AM_CFLAGS) -o libalbacore.so $^ $(AM_LDFLAGS)
 
 albacore.o: albacore.c
 	$(CC) -fPIC -DDYNAMIC_LIBRARY -o $@ -c $^ $(AM_CFLAGS)
