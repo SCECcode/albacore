@@ -10,4 +10,5 @@ install:
 	cp ./config ${prefix}/data
 	cp -R ./alba ${prefix}/data
 	chmod og+r ${prefix}/data/config
-	chmod -R  og+rx ${prefix}/data/alba
+	chmod -R  og+r ${prefix}/data/alba
+	chmod og+x ${prefix}/data/alba
