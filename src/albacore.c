@@ -33,11 +33,14 @@ int albacore_init(const char *dir, const char *label) {
 	sprintf(configbuf, "%s/model/%s/data/config", dir, label);
 
 	// Read the configuration file.
-	if (albacore_read_configuration(configbuf, albacore_configuration) != SUCCESS)
+	if (albacore_read_configuration(configbuf, albacore_configuration) != SUCCESS) {
 		tempVal = FAIL;
+		print_error("No configuration file was found to read from.");
+                return FAIL;
+        }
 
 	// Set up the data directory.
-	sprintf(albacore_data_directory, "%s/model/%s/data/%s/", dir, label, albacore_configuration->model_dir);
+	sprintf(albacore_data_directory, "%s/model/%s/data/%s", dir, label, albacore_configuration->model_dir);
 
 	// Can we allocate the model, or parts of it, to memory. If so, we do.
 	tempVal = albacore_try_reading_model(albacore_velocity_model);
