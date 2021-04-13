@@ -8,5 +8,6 @@ AM_LDFLAGS = ${LDFLAGS}
 install:
 	mkdir -p ${prefix}/data
 	cp ./config ${prefix}/data
-	chmod og+rx alba
 	cp -R ./alba ${prefix}/data
+	chmod og+r ${prefix}/data/config
+	chmod -R  og+rx ${prefix}/data/alba
