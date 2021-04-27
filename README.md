@@ -1,6 +1,6 @@
 # Albacore  
 
-Albacore Southern California off-shore velocity model
+Albacore Southern California off-shore Velocity Model
 
 ## Installation
 
