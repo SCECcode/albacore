@@ -71,6 +71,7 @@ def main():
     # Set our variable defaults.
     username = ""
     path = ""
+    mdir = ""
 
     try:
         fp = open('./config','r')
@@ -91,6 +92,9 @@ def main():
 
         if (variable == 'model_data_path') :
             path = val + '/' + model
+            continue
+        if (variable == 'model_dir') :
+            mdir = "./"+val
             continue
         if (variable == 'nx') :
             dimension_x = int(val)
@@ -151,12 +155,12 @@ def main():
 
     f = open("./alba_mod.txt")
 
-    subprocess.check_call(["mkdir", "-p", "./alba"])
+    subprocess.check_call(["mkdir", "-p", mdir])
 
 
-    f_vp = open("./alba/vp.dat", "wb")
-    f_vs = open("./alba/vs.dat", "wb")
-    f_rho = open("./alba/rho.dat", "wb")
+    f_vp = open(mdir+"/vp.dat", "wb")
+    f_vs = open(mdir+"/vs.dat", "wb")
+    f_rho = open(mdir+"/rho.dat", "wb")
 
     vp_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
     vs_arr = array.array('f', (-1.0,) * (dimension_x * dimension_y * dimension_z))
