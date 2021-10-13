@@ -27,8 +27,7 @@ if sys.version_info.major >= (3) :
 else:
   from urllib2 import urlopen
 
-## at hypocenter  ALBACORE/alba_mod.txt
-
+## at ALBACORE/alba_mod.txt
 model = "ALBACORE"
 
 dimension_x = 0 
