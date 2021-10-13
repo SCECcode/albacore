@@ -134,13 +134,6 @@ def main():
 #   print  "xloc - ",xloc
 
 
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "", [""])
-    except getopt.GetoptError as err:
-        print(str(err))
-        usage()
-        sys.exit(1)
-
     print("\nDownloading model file\n")
 
     fname="alba_mod.txt"
