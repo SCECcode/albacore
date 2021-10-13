@@ -60,7 +60,7 @@ def main():
     na_cnt = 0
     for lon_v in myrange(lon_origin, lon_upper, delta_lon):
         for lat_v in myrange(lat_origin, lat_upper, delta_lat) :
-            for depth_v in xrange(101) :
+            for depth_v in range(101) :
                y_pos = int(round((lat_v - lat_origin) / delta_lat))
                x_pos = int(round((lon_v - lon_origin) / delta_lon))
                z_pos = int(depth_v)
@@ -71,11 +71,11 @@ def main():
                rho=rho_arr[offset];
 
                if vp != -1 :
-                 print x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->", vp," ", vs," ", rho
+                 print(x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->", vp," ", vs," ", rho)
                else :
                  na_cnt=na_cnt+1
 
-    print "na_cnt is ",na_cnt
+    print("na_cnt is ",na_cnt)
 
     print("\nDone!")
 

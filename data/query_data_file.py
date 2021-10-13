@@ -37,7 +37,7 @@ def main():
 
     count =0
 
-    f_lonlat = open("./lonlat.txt")
+    f_lonlat = open("./test_lonlat.txt")
 
     f_vp = open("./alba/vp.dat")
     f_vs = open("./alba/vs.dat")
@@ -70,8 +70,8 @@ def main():
         vs=vs_arr[offset];
         rho=rho_arr[offset];
 
-        print "XX", x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->vp", vp," vs", vs," rho", rho
-        print "offset ",offset
+        print (">>", x_pos," ",y_pos," ",z_pos," >> ", lon_v, " ",lat_v, " ", float(depth_v) , "-->vp", vp," vs", vs," rho", rho)
+        print ("offset ",offset)
 
     f_lonlat.close()
     print("\nDone!")
