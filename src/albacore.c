@@ -12,6 +12,10 @@
 
 #include "albacore.h"
 
+/** The config of the model */
+char *albacore_config_string=NULL;
+int albacore_config_sz=0;
+
 /**
  * Initializes the ALBACORE plugin model within the UCVM framework. In order to initialize
  * the model, we must provide the UCVM install path and optionally a place in memory
@@ -28,6 +32,10 @@ int albacore_init(const char *dir, const char *label) {
 	// Initialize variables.
 	albacore_configuration = calloc(1, sizeof(albacore_configuration_t));
 	albacore_velocity_model = calloc(1, sizeof(albacore_model_t));
+
+        albacore_config_string = calloc(ALBACORE_CONFIG_MAX, sizeof(char));
+        albacore_config_string[0]='\0';
+        albacore_config_sz=0;
 
 	// Configuration file location.
 	sprintf(configbuf, "%s/model/%s/data/config", dir, label);
@@ -62,6 +70,10 @@ int albacore_init(const char *dir, const char *label) {
 						  pow(albacore_configuration->top_left_corner_e - albacore_configuration->bottom_left_corner_e, 2.0f));
 	albacore_total_width_m  = sqrt(pow(albacore_configuration->top_right_corner_n - albacore_configuration->top_left_corner_n, 2.0f) +
 						  pow(albacore_configuration->top_right_corner_e - albacore_configuration->top_left_corner_e, 2.0f));
+
+        /* setup config_string */
+        sprintf(albacore_config_string,"config = %s\n",configbuf);
+        albacore_config_sz=1;
 
 	// Let everyone know that we are initialized and ready for business.
 	albacore_is_initialized = 1;
@@ -310,6 +322,25 @@ int albacore_version(char *ver, int len)
 }
 
 /**
+ * Returns the model config information.
+ *
+ * @param key Config key string to return.
+ * @param sz number of config terms.
+ * @return Zero
+ */
+int albacore_config(char **config, int *sz)
+{
+  int len=strlen(albacore_config_string);
+  if(len > 0) {
+    *config=albacore_config_string;
+    *sz=albacore_config_sz;
+    return UCVM_CODE_SUCCESS;
+  }
+  return UCVM_CODE_ERROR;
+}
+
+
+/**
  * Reads the configuration file describing the various properties of CVM-S5 and populates
  * the configuration struct. This assumes configuration has been "calloc'ed" and validates
  * that each value is not zero at the end.
@@ -533,7 +564,18 @@ int model_finalize() {
  * @return Zero
  */
 int model_version(char *ver, int len) {
-	return albacore_version(ver, len);
+        return albacore_version(ver, len);
+}
+
+/**
+ * Version function loaded and called by the UCVM library. Calls albacore_config.
+ *
+ * @param config Config string to return.
+ * @param sz Number of config terms.
+ * @return Zero
+ */
+int model_config(char **config, int *sz) {
+	return albacore_config(config, sz);
 }
 
 int (*get_model_init())(const char *, const char *) {
@@ -548,7 +590,9 @@ int (*get_model_finalize())() {
 int (*get_model_version())(char *, int) {
          return &albacore_version;
 }
-
+int (*get_model_config())(char **, int*) {
+         return &albacore_config;
+}
 
 
 #endif

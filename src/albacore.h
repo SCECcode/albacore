@@ -28,6 +28,9 @@
 /** Defines a return value of NA from model */
 #define NA -1 
 
+/* config string */
+#define ALBACORE_CONFIG_MAX 1000
+
 // Structures
 /** Defines a point (latitude, longitude, and depth) in WGS84 format */
 typedef struct albacore_point_t {
