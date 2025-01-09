@@ -4,7 +4,7 @@
 AC_PREREQ(2.61)
 AC_INIT(ALBACORE, 1.0, mei@usc.edu)
 AC_CONFIG_SRCDIR([src])
-AM_INIT_AUTOMAKE()
+AM_INIT_AUTOMAKE([foreign no-exeext])
 
 # Checks for programs.
 AC_PROG_CC
