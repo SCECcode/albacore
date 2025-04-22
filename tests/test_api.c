@@ -30,7 +30,12 @@ int main(int argc, const char* argv[]) {
 	albacore_properties_t ret;
 
 	// Initialize the model.
-	assert(albacore_init("../", "albacore") == 0);
+	char *envstr=getenv("UCVM_INSTALL_PATH");
+        if(envstr != NULL) {
+           assert(albacore_init(envstr, "albacore") == 0);
+           } else {
+             assert(albacore_init("..", "albacore") == 0);
+        }
 
 	printf("Loaded the model successfully.\n");
 

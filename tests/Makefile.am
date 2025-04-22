@@ -6,7 +6,7 @@ bin_PROGRAMS = test_albacore
 AM_CFLAGS = ${CFLAGS}
 AM_LDFLAGS = ${LDFLAGS}
 
-objects = test.o
+objects = test_api.o
 TARGETS = $(bin_PROGRAMS)
 
 all: $(bin_PROGRAMS)
