@@ -1,5 +1,8 @@
 # Albacore  
 
+[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org
+/licenses/BSD-3-Clause)
+
 Albacore Southern California off-shore Velocity Model
 
 ## Installation
