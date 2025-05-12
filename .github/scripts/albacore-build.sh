@@ -8,7 +8,7 @@ if [ $tmp == 'Darwin' ]; then
   brew reinstall gcc
 fi
 
-aclocal -I m4
+aclocal 
 automake --add-missing
 autoconf
 ./configure --prefix=$UCVM_INSTALL_PATH/model/albacore

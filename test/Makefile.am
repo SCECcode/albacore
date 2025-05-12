@@ -3,8 +3,8 @@
 bin_PROGRAMS = test_albacore
 
 # General compiler/linker flags
-AM_CFLAGS = ${CFLAGS}
-AM_LDFLAGS = ${LDFLAGS}
+AM_CFLAGS = ${CFLAGS} -I../src
+AM_LDFLAGS = ${LDFLAGS} -L../src -lalbacore -lm -ldl
 
 objects = test_api.o
 TARGETS = $(bin_PROGRAMS)
@@ -18,11 +18,8 @@ install:
 test_albacore: $(objects)
 	$(CC) -o $@ $^ $(AM_LDFLAGS)
 
-$(objects): %.o: %.c
-	$(CC) -o $@ -c $^ $(AM_CFLAGS) 
-
 run_unit : test_albacore
 	./test_albacore
 
 clean :
-        rm -rf *~ *.o test_alabacore
+	rm -rf *~ *.o test_alabacore
