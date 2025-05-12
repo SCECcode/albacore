@@ -16,7 +16,13 @@ install:
 	cp test_albacore ${prefix}/tests
 
 test_albacore: $(objects)
-	$(CC) -o $@ $^ $(AM_CFLAGS) -L../src -lalbacore $(AM_LDFLAGS)
+	$(CC) -o $@ $^ $(AM_LDFLAGS)
 
 $(objects): %.o: %.c
-	$(CC) -o $@ -c $^ $(AM_CFLAGS) -I../src/ $(AM_CFLAGS)
+	$(CC) -o $@ -c $^ $(AM_CFLAGS) 
+
+run_unit : test_albacore
+	./test_albacore
+
+clean :
+        rm -rf *~ *.o test_alabacore

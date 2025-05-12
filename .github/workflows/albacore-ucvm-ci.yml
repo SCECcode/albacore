@@ -1,0 +1,75 @@
+name: albacore-ucvm-ci
+
+on:
+  push:
+    branches: [ foo ]
+
+jobs:
+  albacore-build-ucvm-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7]
+    steps:
+    - name: set UCVM_SRC_PATH 
+      run: echo "UCVM_SRC_PATH=$RUNNER_WORKSPACE/albacore/ucvm" >> $GITHUB_ENV
+    - name: set UCVM_INSTALL_PATH 
+      run: echo "UCVM_INSTALL_PATH=$RUNNER_WORKSPACE/albacore/target" >> $GITHUB_ENV
+### build ucvm(main) first 
+    - name: get-ucvm 
+      uses: actions/checkout@v2
+      with: 
+        repository: 'SCECcode/UCVM'
+##        ref: main
+        ref: testMei
+        path: ucvm
+#    - name: Start SSH via Ngrok
+#      if: ${{ success() }}
+#      uses: luchihoratiu/debug-via-ssh@main
+#      with:
+#            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
+#            NGROK_TIMEOUT: 3000
+#            SSH_PASS: ${{ secrets.NGROK_SECRET }}
+    - name: build-ucvm
+      uses: ./ucvm/.github/actions/build-ucvm-action
+      with:
+         initiating-repo: 'albacore'
+         target-model: 'albacore'
+         target-branch: 'testMei'
+    - name: get-result ${{ steps.build-ucvm.outputs.build-log }}
+      run: more ${{ steps.build-ucvm.outputs.build-log }}
+      shell: bash
+    - name: move stock albacore away
+      run: (rm -rf $RUNNER_WORKSPACE/albacore/ucvm/work/model/albacore)
+      shell: bash
+### build albacore from github 
+    - name: checkout albacore main
+      uses: actions/checkout@v2
+      with: 
+        path: albacore
+    - name: move it to the right location
+      run: (mv albacore $RUNNER_WORKSPACE/albacore/ucvm/work/model; pwd; ls)
+      shell: bash
+    - name: build albacore as part of ucvm 
+      run: (cd $RUNNER_WORKSPACE/albacore/ucvm/work/model/albacore; ./.github/scripts/albacore-build.sh)
+      shell: bash
+### check ucvm is still valid
+    - name: check on ucvm
+      run: (source $UCVM_INSTALL_PATH/conf/ucvm_env.sh; ucvm_query -H)
+      shell: bash
+    - name: test albacore with ucvm
+      run: (cd $RUNNER_WORKSPACE/albacore/ucvm/work/model/albacore; source $UCVM_INSTALL_PATH/conf/ucvm_env.sh; ./.github/scripts/albacore-test-ucvm.sh)
+      shell: bash
+#    - name: Start SSH via Ngrok
+#      if: ${{ success() }}
+#      uses: luchihoratiu/debug-via-ssh@main
+#      with:
+#            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_TOKEN }}
+#            NGROK_TIMEOUT: 3000
+#            SSH_PASS: ${{ secrets.NGROK_SECRET }}
+    - name: test albacore under ucvm
+      run: (cd $RUNNER_WORKSPACE/albacore/ucvm; source $UCVM_INSTALL_PATH/conf/ucvm_env.sh; ./.github/scripts/ucvm-test.sh)
+      shell: bash
+
+
+
