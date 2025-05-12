@@ -11,7 +11,7 @@ Albacore Southern California off-shore Velocity Model
 ## Installation
 
 This package is intended to be installed as part of the UCVM framework,
-version 22.7.0 or higher. 
+version 25.7 or higher. 
 
 ## Library
 
