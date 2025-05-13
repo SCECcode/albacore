@@ -22,4 +22,4 @@ run_unit : test_albacore
 	./test_albacore
 
 clean :
-	rm -rf *~ *.o test_alabacore
+	rm -rf *~ *.o test_albacore
