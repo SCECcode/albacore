@@ -9,8 +9,8 @@ if [ $tmp == 'Darwin' ]; then
 fi
 
 aclocal 
-automake --add-missing
 autoconf
+automake --add-missing --force-missing
 ./configure --prefix=$UCVM_INSTALL_PATH/model/albacore
 make
 make install
