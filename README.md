@@ -1,11 +1,12 @@
-# Albacore  
+# Albacore Southern California offshore Velocity Model (ALBACORE)
+
+<a href="https://github.com/sceccode/albacore.git"><img src="https://github.com/sceccode/albacore/wiki/images/albacore_logo.png"></a>
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![GitHub repo size](https://img.shields.io/github/repo-size/sceccode/albacore)
 [![albacore-ucvm-ci Actions Status](https://github.com/SCECcode/albacore/workflows/albacore-ucvm-ci/badge.svg)](https://github.com/SCECcode/albacore/actions)
 
-
-Albacore Southern California off-shore Velocity Model
+Albacore Southern California offshore Velocity Model
 
 ## Installation
 
