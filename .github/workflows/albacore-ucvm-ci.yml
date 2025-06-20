@@ -2,7 +2,8 @@ name: albacore-ucvm-ci
 
 on:
   push:
-    branches: [ main ]
+##    branches: [ main ]
+    branches: [ foofoo ]
 
 jobs:
   albacore-build-ucvm-linux:
