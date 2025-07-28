@@ -8,6 +8,10 @@
 
 Albacore Southern California offshore Velocity Model
 
+ALBACORE is a shear wave velocity model for offshore Southern California that images plate boundary deformation including both thickening and thinning of the crustal and mantle lithosphere at the westernmost edge of the North American continent. The Asthenospheric and Lithospheric Broadband Architecture from the California Offshore Region Experiment (ALBACORE) ocean bottom seismometer array, together with 65 stations of the onshore Southern California Seismic Network, was used to measure ambient noise correlation functions and Rayleigh wave dispersion curves which are inverted for 3-D shear wave velocities. The resulting velocity model defines the transition from continental lithosphere to oceanic, illuminating the complex history and deformation in the region.
+
+Bowden, D. C., Kohler, M. D., Tsai, V. C., & Weeraratne, D. S. (2016). Offshore southern California lithospheric velocity structure from noise cross-correlation functions. Journal of Geophysical Research, 121(5), 3415-3427. doi:10.1002/2016JB012919
+
 ## Installation
 
 This package is intended to be installed as part of the UCVM framework,
